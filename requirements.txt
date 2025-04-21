@@ -1,5 +1,6 @@
 streamlit
 pyPDF2
 transformers
-
-
+torch
+sentencepiece
+nltk
