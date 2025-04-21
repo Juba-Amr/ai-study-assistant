@@ -2,3 +2,4 @@ streamlit
 pyPDF2
 transformers
 
+

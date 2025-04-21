@@ -1,8 +1,12 @@
 import streamlit as st
 from PyPDF2 import PdfReader
+from transformers import pipeline
+
+
 
 number_of_pages = 0
 text_to_sumarize = ""
+summary = ""
 st.title("Welcome to your AI assisstant")
 
 with st.form(key="get_pdf"):
@@ -23,4 +27,20 @@ for i in range(number_of_pages):
     page = reader.pages[i]
     text_to_sumarize += page.extract_text()
 
-print(text_to_sumarize)
+
+
+summarizer = pipeline(
+    "summarization",
+    model="google/pegasus-xsum",
+    do_sample=False
+)
+
+chunks = len(text_to_sumarize)//500
+for i in range(0,chunks):
+    summary += summarizer(
+        text_to_sumarize[i*500:(i+1)*500],
+        min_length=20,
+        max_length=30
+    )[0]['summary_text']
+
+st.write(summary)
